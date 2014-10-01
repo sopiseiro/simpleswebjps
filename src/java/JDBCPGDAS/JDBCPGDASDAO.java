@@ -50,7 +50,7 @@ public class JDBCPGDASDAO implements PGDASDAO{
             
             ps.executeUpdate();
             ps.close();
-            //connection.close();
+            connection.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(JDBCPGDASDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -59,7 +59,18 @@ public class JDBCPGDASDAO implements PGDASDAO{
 
     @Override
     public void remover(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            String SQL = "DELETE * from pgdas where id= ?";
+            PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+            ps.close();
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCPGDASDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @Override
@@ -78,11 +89,21 @@ public class JDBCPGDASDAO implements PGDASDAO{
                 pgd.setValorpa(rs.getFloat("valorpa"));
                 pgd.setValdecsemretencao(rs.getFloat("valdecsemretencao"));
                 pgd.setValdeccomretencao(rs.getFloat("valdeccomretencao"));
-                
+                pgd.setValorrecoiss(rs.getFloat("valorrecoiss"));
+                pgd.setAliquota(rs.getFloat("aliquota"));
+                pgd.setData(rs.getString("data"));
+                pg.add(pgd);
                 
             }
+            
+            rs.close();
+            ps.close();
+            
+            return pg;
+            
         } catch (SQLException ex) {
             Logger.getLogger(JDBCPGDASDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Erro ao listar PGDAS", ex.getCause());
         }
     }
 

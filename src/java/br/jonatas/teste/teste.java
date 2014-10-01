@@ -9,6 +9,7 @@ import br.jonatas.Simples.Bean.PGDAS;
 import br.jonatas.Simples.dao.PGDASDAO;
 import br.jonatas.somples.util.ConnectionFactory;
 import br.jonatas.somples.util.DAOFactory;
+import java.util.List;
 
 /**
  *
@@ -17,6 +18,7 @@ import br.jonatas.somples.util.DAOFactory;
 public class teste {
     public static void main(String[] args) {
         ConnectionFactory.getConnection();
+        /*
         PGDAS pgdas = new PGDAS();
         pgdas.setPa("201510");
         pgdas.setRazao("TESTE 123 web");
@@ -29,7 +31,12 @@ public class teste {
         pgdas.setData("20150000");
         
         PGDASDAO pgds = DAOFactory.createPGDASDAO();
-        pgds.inserir(pgdas);
+        pgds.inserir(pgdas);*/
+        
+        PGDASDAO pg = DAOFactory.createPGDASDAO();
+        List<PGDAS> pgdas = pg.listar();
+        for (PGDAS pgds : pgdas)
+            System.out.println(pgds.getRazao());
         
     }
 }
